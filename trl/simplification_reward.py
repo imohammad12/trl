@@ -16,7 +16,7 @@ class SimplificationReward:
 
     default_params = {
         "device": 'cuda:2' if torch.cuda.is_available() else 'cpu',
-        "reward_coef": 5,
+        "reward_coef_unsup": 5,
         "alpha": 1.0,
         "beta": 1.0,
 
@@ -74,16 +74,17 @@ class SimplificationReward:
 
     def cal_reward(self, query, response):
         simplicity_reward = self.simplicity_score(response)
-        similarity_reward = self.semantic_sim(query, response)
+        # similarity_reward = self.semantic_sim(query, response)
 
-        final_reward = (similarity_reward ** (self.params["alpha"])) * (simplicity_reward ** (self.params["beta"]))
+        # final_reward = (similarity_reward ** (self.params["alpha"])) * (simplicity_reward ** (self.params["beta"]))
+        final_reward = (simplicity_reward ** (self.params["beta"]))
 
         del simplicity_reward
-        del similarity_reward
+        # del similarity_reward
 
         torch.cuda.empty_cache()
 
-        return final_reward * self.params['reward_coef']
+        return final_reward * self.params['reward_coef_unsup']
 
     def cal_mean_reward(self, queries, responses, forward_batch_size=10):
         rewards = []

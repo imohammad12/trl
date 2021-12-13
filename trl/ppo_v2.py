@@ -212,8 +212,8 @@ class PegasusPPOTrainer:
         """Compute per token rewards from scores and KL-penalty."""
         kl = logprobs - ref_logprobs
         non_score_reward = -self.kl_ctl.value * kl
-        # rewards = torch.zeros_like(non_score_reward.clone().detach())
-        rewards = non_score_reward.clone().detach()
+        rewards = torch.zeros_like(non_score_reward.clone().detach())
+        # rewards = non_score_reward.clone().detach()
         # print("rew: ", rewards.shape, 'score: ', scores.shape)
         rewards[:, -1] += scores
         return rewards, non_score_reward, self.kl_ctl.value

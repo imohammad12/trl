@@ -10,6 +10,7 @@ import torch.nn.functional as F
 import collections
 import numpy as np
 import transformers
+from easse.sari import corpus_sari, get_corpus_sari_operation_scores
 
 # Cell
 
@@ -135,3 +136,22 @@ def split_batch_encoding(batch_enc_obj: transformers.tokenization_utils_base.Bat
         batch_dict[key] = batch_enc_obj[key][strat_indx:end_indx, :]
     split_obj = transformers.tokenization_utils_base.BatchEncoding(batch_dict)
     return split_obj
+
+
+def calculate_sari_easse(ref_sents, sys_sents, orig_sents):
+    sari_scores = []
+    add_scores = []
+    delete_scores = []
+    keep_scores = []
+
+    for (ref, sys, orig) in zip(ref_sents, sys_sents, orig_sents):
+
+        add, keep, delete = get_corpus_sari_operation_scores(orig_sents=[orig], sys_sents=[sys],
+                                                             refs_sents=[[ref]])
+        overal_sari = (add + keep + delete) / 3
+        sari_scores.append(overal_sari)
+        add_scores.append(add)
+        delete_scores.append(delete)
+        keep_scores.append(keep)
+
+    return sari_scores, add_scores, delete_scores, keep_scores

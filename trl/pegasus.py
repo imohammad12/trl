@@ -78,19 +78,22 @@ class PegasusWithValueHeadModel(PegasusPreTrainedModel):
         return outputs
 
 
-def respond_to_batch_pegasus(model, queries, txt_len=20, top_k=0, top_p=1.0):
+def respond_to_batch_pegasus(model, queries, txt_len=20, top_k=0, top_p=1.0, no_explr=False):
     """Sample text from language model."""
     for i in range(txt_len):
         # Get Logits
         output = model(**queries)
         next_token_logits = output[0][:, -1, :]
         next_token_logits = top_k_top_p_filtering(next_token_logits, top_k=top_k, top_p=top_p)
+
         # Sample
-        probs = F.softmax(next_token_logits, dim=-1)
-        next_token = torch.multinomial(probs, num_samples=1).squeeze(1)
+        if not no_explr:
+            probs = F.softmax(next_token_logits, dim=-1)
+            next_token = torch.multinomial(probs, num_samples=1).squeeze(1)
 
         # No exploration (No sampling)
-        # next_token = next_token_logits.argmax(-1)
+        else:
+            next_token = next_token_logits.argmax(-1)
 
         queries['decoder_input_ids'] = torch.cat([queries['decoder_input_ids'],
                                                   next_token.unsqueeze(-1)],
