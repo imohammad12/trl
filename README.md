@@ -1,3 +1,5 @@
+# Fine-tuning Pre-trained Language Models for Text Simplification with Deep Reinforcement Learning
+
 
 We propose a new approach for text simplification by fine-tuning powerful pretrained lan- guage models with Reinforcement Learning. Without using complex-simple sentence pairs, we update a pretrained language model fine-tuned for paraphrasing to simply complex sen- tences. For this aim, we propose an unsupervised simplification reward function and update the pretrained language model to optimize the reward. By exploring the space of possi- ble simplifications and getting feedback from the reward function, the pretrained language model fine-tuned for paraphrasing learns to simplify sentences instead of just paraphrasing them. We have also used a supervised reward for fine-tuning the paraphrasing model. Even with using the supervised reward, we still need much less aligned simplification data to ob- tain a high-quality text simplification model compared to other supervised simplification models.
 Report : https://drive.google.com/file/d/15iBgWhBedi2ERmazz3CRSVIBAdim6YpW/view?usp=sharing
