@@ -15,7 +15,7 @@ class SimplificationReward:
     """
 
     default_params = {
-        "device": 'cuda:2' if torch.cuda.is_available() else 'cpu',
+        "device_reward": 'cuda:2' if torch.cuda.is_available() else 'cpu',
         "reward_coef_unsup": 5,
         "alpha": 1.0,
         "beta": 1.0,
@@ -37,9 +37,9 @@ class SimplificationReward:
 
         toks = self.tokenizer_simplicity(text=sents, truncation=True, padding=True, max_length=100, return_tensors='pt')
 
-        input_ids = toks['input_ids'].to(self.params["device"])
-        attention_mask = toks['attention_mask'].to(self.params["device"])
-        token_type_ids = toks['token_type_ids'].to(self.params["device"])
+        input_ids = toks['input_ids'].to(self.params["device_reward"])
+        attention_mask = toks['attention_mask'].to(self.params["device_reward"])
+        token_type_ids = toks['token_type_ids'].to(self.params["device_reward"])
 
         with torch.no_grad():
             output = self.model_simplicity(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids,
