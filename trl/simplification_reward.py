@@ -74,10 +74,10 @@ class SimplificationReward:
 
     def cal_reward(self, query, response):
         simplicity_reward = self.simplicity_score(response)
-        # similarity_reward = self.semantic_sim(query, response)
+        similarity_reward = self.semantic_sim(query, response)
 
-        # final_reward = (similarity_reward ** (self.params["alpha"])) * (simplicity_reward ** (self.params["beta"]))
-        final_reward = (simplicity_reward ** (self.params["beta"]))
+        final_reward = (similarity_reward ** (self.params["alpha"])) * (simplicity_reward ** (self.params["beta"]))
+        # final_reward = (simplicity_reward ** (self.params["beta"]))
 
         del simplicity_reward
         # del similarity_reward
